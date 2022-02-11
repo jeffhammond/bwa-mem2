@@ -49,13 +49,17 @@ extern uint64_t tprof[LIM_R][LIM_C];
 // ---------------
 
 void __cpuid(unsigned int i, unsigned int cpuid[4]) {
-#ifdef _WIN32
+#if defined(__aarch64__)
+    cpuid[0]=0;
+    cpuid[1]=0;
+    cpuid[2]=0;
+    cpuid[3]=0;
+#elif defined(_WIN32)
     __cpuid((int *) cpuid, (int)i);
-
+#elif defined(__x86_64__) || defined(__i386__)
+    asm volatile ("cpuid" : "=a" (cpuid[0]), "=b" (cpuid[1]), "=c" (cpuid[2]), "=d" (cpuid[3]) : "0" (i), "2" (0));
 #else
-    asm volatile
-        ("cpuid" : "=a" (cpuid[0]), "=b" (cpuid[1]), "=c" (cpuid[2]), "=d" (cpuid[3])
-            : "0" (i), "2" (0));
+#error Unsupported
 #endif
 }
 

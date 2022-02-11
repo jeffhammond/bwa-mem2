@@ -57,7 +57,12 @@ extern "C" {
 // adapted from https://github.com/01org/linux-sgx/blob/master/common/inc/internal/linux/cpuid_gnu.h
 void __cpuidex(int cpuid[4], int func_id, int subfunc_id)
 {
-#if defined(__x86_64__)
+#if defined(__aarch64__)
+    cpuid[0]=0;
+    cpuid[1]=0;
+    cpuid[2]=0;
+    cpuid[3]=0;
+#elif defined(__x86_64__)
 	__asm__ volatile ("cpuid"
 			: "=a" (cpuid[0]), "=b" (cpuid[1]), "=c" (cpuid[2]), "=d" (cpuid[3])
 			: "0" (func_id), "2" (subfunc_id));
@@ -71,6 +76,9 @@ void __cpuidex(int cpuid[4], int func_id, int subfunc_id)
 
 static int x86_simd(void)
 {
+#if defined(__aarch64__)
+        return 0;
+#else
 	int flag = 0, cpuid[4], max_id;
 	__cpuidex(cpuid, 0, 0);
 	max_id = cpuid[0];
@@ -90,6 +98,7 @@ static int x86_simd(void)
 		if (cpuid[1]>>30&1) flag |= SIMD_AVX512BW;
 	}
 	return flag;
+#endif
 }
 
 static int exe_path(const char *exe, int max, char buf[], int *base_st)
