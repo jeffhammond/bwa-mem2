@@ -38,8 +38,8 @@ ifeq ($(CXX), icpc)
 	CC= icc
 else ifeq ($(CXX), g++)
 	CC=gcc
-endif		
-ARCH_FLAGS=	-msse -msse2 -msse3 -mssse3 -msse4.1
+endif
+ARCH_FLAGS=	# remove x86 specific flags
 MEM_FLAGS=	-DSAIS=1
 CPPFLAGS+=	-DENABLE_PREFETCH -DV17=1 -DMATE_SORT=0 $(MEM_FLAGS) 
 INCLUDES=   -Isrc -Iext/safestringlib/include
@@ -83,6 +83,8 @@ else ifeq ($(arch),avx512)
 	endif
 else ifeq ($(arch),native)
 	ARCH_FLAGS=-march=native
+else ifeq ($(arch),armv8.2)
+    ARCH_FLAGS=	-march=armv8.2-a
 else ifneq ($(arch),)
 # To provide a different architecture flag like -march=core-avx2.
 	ARCH_FLAGS=$(arch)
@@ -102,15 +104,17 @@ all:$(EXE)
 
 multi:
 	rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
-	$(MAKE) arch=sse41    EXE=bwa-mem2.sse41    CXX=$(CXX) all
-	rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
-	$(MAKE) arch=sse42    EXE=bwa-mem2.sse42    CXX=$(CXX) all
-	rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
-	$(MAKE) arch=avx    EXE=bwa-mem2.avx    CXX=$(CXX) all
-	rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
-	$(MAKE) arch=avx2   EXE=bwa-mem2.avx2     CXX=$(CXX) all
-	rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
-	$(MAKE) arch=avx512 EXE=bwa-mem2.avx512bw CXX=$(CXX) all
+	$(MAKE) arch=armv8.2   EXE=bwa-mem2.armv8.2    CXX=$(CXX) all
+	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
+	#$(MAKE) arch=sse41    EXE=bwa-mem2.sse41    CXX=$(CXX) all
+	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
+	#$(MAKE) arch=sse42    EXE=bwa-mem2.sse42    CXX=$(CXX) all
+	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
+	#$(MAKE) arch=avx    EXE=bwa-mem2.avx    CXX=$(CXX) all
+	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
+	#$(MAKE) arch=avx2   EXE=bwa-mem2.avx2     CXX=$(CXX) all
+	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
+	#$(MAKE) arch=avx512 EXE=bwa-mem2.avx512bw CXX=$(CXX) all
 	$(CXX) -Wall -O3 src/runsimd.cpp -Iext/safestringlib/include -Lext/safestringlib/ -lsafestring $(STATIC_GCC) -o bwa-mem2
 
 
