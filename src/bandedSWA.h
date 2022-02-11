@@ -36,7 +36,9 @@ Authors: Vasimuddin Md <vasimuddin.md@intel.com>; Sanchit Misra <sanchit.misra@i
 #include <assert.h>
 #include "macro.h"
 
-#if (__AVX512BW__ || __AVX2__)
+#ifdef SSE2NEON
+#include "sse2neon/sse2neon.h"
+#elif (__AVX512BW__ || __AVX2__)
 #include <immintrin.h>
 #else
 #include <smmintrin.h>  // for SSE4.1

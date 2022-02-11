@@ -84,7 +84,7 @@ else ifeq ($(arch),avx512)
 else ifeq ($(arch),native)
 	ARCH_FLAGS=-march=native
 else ifeq ($(arch),armv8.2)
-    ARCH_FLAGS=	-march=armv8.2-a
+    ARCH_FLAGS=	-march=armv8.2-a -DSSE2NEON -I.
 else ifneq ($(arch),)
 # To provide a different architecture flag like -march=core-avx2.
 	ARCH_FLAGS=$(arch)

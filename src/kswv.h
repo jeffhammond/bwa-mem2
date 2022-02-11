@@ -39,7 +39,11 @@ Authors: Vasimuddin Md <vasimuddin.md@intel.com>; Sanchit Misra <sanchit.misra@i
 #include "ksw.h"
 #include "bandedSWA.h"
 #else
+#ifdef SSE2NEON
+#include "sse2neon/sse2neon.h"
+#else
 #include <immintrin.h>
+#endif
 #endif
 
 #ifdef __GNUC__

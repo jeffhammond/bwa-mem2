@@ -30,7 +30,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <assert.h>
+#ifdef SSE2NEON
+#include "sse2neon/sse2neon.h"
+#else
 #include <emmintrin.h>
+#endif
 #include "ksw.h"
 #include "macro.h"
 
