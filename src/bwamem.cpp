@@ -1946,14 +1946,14 @@ inline void sortPairsLen(SeqPair *pairArray, int32_t count, SeqPair *tempArray, 
 {
 
     int32_t i;
-#if ((!__AVX512BW__) & (__AVX2__ | __SSE2__))
-    for(i = 0; i <= MAX_SEQ_LEN16; i++) hist[i] = 0;
-#else   
+#if (__AVX512BW__)
     __m512i zero512 = _mm512_setzero_si512();
     for(i = 0; i <= MAX_SEQ_LEN16; i+=16)
     {
         _mm512_store_si512((__m512i *)(hist + i), zero512);
     }
+#else
+    for(i = 0; i <= MAX_SEQ_LEN16; i++) hist[i] = 0;
 #endif
     
     for(i = 0; i < count; i++)
