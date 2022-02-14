@@ -100,6 +100,9 @@ CXXFLAGS+=	-g -O3 -fpermissive $(ARCH_FLAGS) #-Wall ##-xSSE2
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) $< -o $@
 
+sse2neon:
+	git clone --recursive https://github.com/DLTcollab/sse2neon.git
+
 all:$(EXE)
 
 multi:
