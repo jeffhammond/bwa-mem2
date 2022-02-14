@@ -105,7 +105,7 @@ sse2neon:
 
 all:$(EXE)
 
-multi:
+multi: sse2neon
 	rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
 	$(MAKE) arch=armv8.2   EXE=bwa-mem2.armv8.2    CXX=$(CXX) all
 	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
