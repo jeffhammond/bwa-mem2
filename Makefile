@@ -84,7 +84,14 @@ else ifeq ($(arch),avx512)
 else ifeq ($(arch),native)
 	ARCH_FLAGS=-march=native
 else ifeq ($(arch),armv8.2)
-    ARCH_FLAGS=	-march=armv8.2-a -DSSE2NEON -I.
+    CC=gcc-11
+    CXX=g++-11
+    ARCH_FLAGS=-march=armv8.2-a+fp+simd+lse
+    ifeq ($(workaround),sse2neon)
+	ARCH_FLAGS += -DSSE2NEON -I.
+    else ifeq ($(workaround),simde)
+	ARCH_FLAGS += -DSIMDE -I. #-D__SSE2__=1 -D__AVX__=1
+    endif
 else ifneq ($(arch),)
 # To provide a different architecture flag like -march=core-avx2.
 	ARCH_FLAGS=$(arch)
@@ -100,14 +107,19 @@ CXXFLAGS+=	-g -O3 -fpermissive $(ARCH_FLAGS) #-Wall ##-xSSE2
 .cpp.o:
 	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) $(INCLUDES) $< -o $@
 
+simden:
+	git clone --recursive https://github.com/simd-everywhere/simde.git
+
 sse2neon:
 	git clone --recursive https://github.com/DLTcollab/sse2neon.git
 
 all:$(EXE)
 
-multi: sse2neon
+multi: simde sse2neon
 	rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
-	$(MAKE) arch=armv8.2   EXE=bwa-mem2.armv8.2    CXX=$(CXX) all
+	$(MAKE) arch=armv8.2 workaround=simde  EXE=bwa-mem2.armv8.2 all
+	m -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
+	$(MAKE) arch=armv8.2 workaround=sse2neon  EXE=bwa-mem2.armv8.2 all
 	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;
 	#$(MAKE) arch=sse41    EXE=bwa-mem2.sse41    CXX=$(CXX) all
 	#rm -f src/*.o $(BWA_LIB); cd ext/safestringlib/ && $(MAKE) clean;

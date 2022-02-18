@@ -41,6 +41,8 @@ Authors: Vasimuddin Md <vasimuddin.md@intel.com>; Sanchit Misra <sanchit.misra@i
 #else
 #ifdef SSE2NEON
 #include "sse2neon/sse2neon.h"
+#elif defined(SIMDE)
+#include "simde/simde/arm/neon.h"
 #else
 #include <immintrin.h>
 #endif

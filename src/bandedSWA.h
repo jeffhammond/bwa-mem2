@@ -38,6 +38,8 @@ Authors: Vasimuddin Md <vasimuddin.md@intel.com>; Sanchit Misra <sanchit.misra@i
 
 #ifdef SSE2NEON
 #include "sse2neon/sse2neon.h"
+#elif defined(SIMDE)
+#include "simde/simde/arm/neon.h"
 #elif (__AVX512BW__ || __AVX2__)
 #include <immintrin.h>
 #else
