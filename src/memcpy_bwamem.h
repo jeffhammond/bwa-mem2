@@ -40,6 +40,6 @@ extern "C" {
 }
 #endif
 
-errno_t memcpy_bwamem(void *dest, rsize_t dmax, const void *src, rsize_t smax, char *file_name, int line_num);
+errno_t memcpy_bwamem(void *dest, rsize_t dmax, const void *src, rsize_t smax, const char *file_name, int line_num);
 
 #endif
