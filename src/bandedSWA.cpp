@@ -4148,7 +4148,7 @@ void BandedPairWiseSW::smithWaterman128_16(uint16_t seq1SoA[],
 
 /********************************************************************************/
 /* SSE2 - 8 bit version */
-#ifndef __SSE4_1__
+#if !defined(__SSE4_1__) && !defined(SIMDE)
 static inline __m128i _mm_blendv_epi8 (__m128i x, __m128i y, __m128i mask)
 {
     // Replace bit in x with bit in y when matching bit in mask is set:

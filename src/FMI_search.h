@@ -37,8 +37,10 @@ Authors: Sanchit Misra <sanchit.misra@intel.com>; Vasimuddin Md <vasimuddin.md@i
 #ifdef SSE2NEON
 #include "sse2neon/sse2neon.h"
 #elif defined(SIMDE)
-#include "simde/simde/arm/neon.h"
-#include "x86hacks.h"
+#define SIMDE_ENABLE_NATIVE_ALIASES
+#include <simde/x86/avx2.h>
+//#include "simde/simde/arm/neon.h"
+//#include "x86hacks.h"
 #else
 #include <immintrin.h>
 #endif

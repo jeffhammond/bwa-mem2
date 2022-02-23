@@ -30,12 +30,14 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <assert.h>
+#if 0
 #ifdef SSE2NEON
 #include "sse2neon/sse2neon.h"
 #elif defined(SIMDE)
 #include "simde/simde/arm/neon.h"
 #else
 #include <emmintrin.h>
+#endif
 #endif
 #include "ksw.h"
 #include "macro.h"

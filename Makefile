@@ -90,7 +90,7 @@ else ifeq ($(arch),armv8.2)
     ifeq ($(workaround),sse2neon)
 	ARCH_FLAGS += -DSSE2NEON -I.
     else ifeq ($(workaround),simde)
-	ARCH_FLAGS += -DSIMDE -I. #-D__SSE2__=1 -D__AVX__=1
+	ARCH_FLAGS += -DSIMDE -I./simde -D__SSE2__=1 -D__AVX__=1
     endif
 else ifneq ($(arch),)
 # To provide a different architecture flag like -march=core-avx2.

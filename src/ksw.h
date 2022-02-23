@@ -29,7 +29,9 @@
 #ifdef SSE2NEON
 #include "sse2neon/sse2neon.h"
 #elif defined(SIMDE)
-#include "simde/simde/arm/neon.h"
+#define SIMDE_ENABLE_NATIVE_ALIASES
+#include <simde/x86/sse2.h>
+//#include "simde/simde/arm/neon.h"
 #else
 #include <emmintrin.h>
 #endif

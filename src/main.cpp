@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
         kstring_t pg = {0,0,0};
         extern char *bwa_pg;
 
+#ifndef __aarch64__
         fprintf(stderr, "-----------------------------\n");
 #if __AVX512BW__
         fprintf(stderr, "Executing in AVX512 mode!!\n");
@@ -87,6 +88,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Executing in SSE4.1 mode!!\n");        
 #endif
         fprintf(stderr, "-----------------------------\n");
+#endif
 
         #if SA_COMPRESSION
         fprintf(stderr, "* SA compression enabled with xfactor: %d\n", 0x1 << SA_COMPX);
